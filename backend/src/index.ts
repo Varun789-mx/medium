@@ -1,30 +1,47 @@
 import { Hono } from 'hono'
 import { PrismaClient } from './generated/prisma/edge'
 import { withAccelerate } from '@prisma/extension-accelerate'
-import { sign } from 'hono/jwt'
+import { sign, verify } from 'hono/jwt'
 import bcrypt from 'bcryptjs';
 
 const app = new Hono<{
   Bindings: {
     DATABASE_URL: string
     JWT_SECRET: string
+  },
+  Variables: {
+    userid: string,
   }
 }>();
 app.get('/', (c) => {
   return c.text('Hello Hono!')
 })
-app.get('/test-db', async (c) => {
-  const prisma = new PrismaClient({
-    datasourceUrl: c.env?.DATABASE_URL,
-  }).$extends(withAccelerate());
 
+
+app.post('/api/v1/blog/*', async (c, next) => {
   try {
-    const userCount = await prisma.user.count();
-    return c.json({ userCount });
-  } catch (error) {
-    return c.json({ error: (error as Error).message }, 500);
+    const header = c.req.header('AUTHORIZATION') || "";
+    if (!header.startsWith('Bearer ')) {
+      c.status(404);
+      return c.json({
+        msg: "missing or invalid header",
+      })
+    }
+    const Usertoken = header.split(" ")[1];
+    const verifyHeader = await verify(Usertoken, c.env.JWT_SECRET);
+    if (!verifyHeader) {
+      c.status(401);
+      return c.json({ Error: "Incorrect credentials" });
+    }
+
+    c.set("userid", Usertoken);
+    await next()
   }
-});
+  catch (error) {
+    c.status(500);
+    return c.json("Internal Error" + error);
+  }
+})
 app.post('/api/v1/signin', async (c) => {
   const prisma = new PrismaClient({
     datasourceUrl: c.env?.DATABASE_URL,
@@ -40,8 +57,8 @@ app.post('/api/v1/signin', async (c) => {
         Error: "Incorrect password or email"
       });
     }
-    const hashedpassword = await bcrypt.compare(body.password, GetUser?.password);
-    if (hashedpassword) {
+    const isValidpassword = await bcrypt.compare(body.password, GetUser.password);
+    if (isValidpassword) {
       const jwt = await sign({ id: GetUser.id, email: GetUser.email }, c.env.JWT_SECRET);
       return c.json({
         token: "Bearer " + jwt,
@@ -54,7 +71,7 @@ app.post('/api/v1/signin', async (c) => {
     }
   }
   catch (error) {
-    c.status(408);
+    c.status(500);
     return c.json({ Error: "Internal server error" + error });
   }
 });
@@ -66,19 +83,28 @@ app.post('/api/v1/signup', async (c) => {
   const body = await c.req.json();
   try {
     const hashedpassword = await bcrypt.hash(body.password, 12);
-    const user = await prisma.user.create({
-      data: {
-        email: body.email,
-        name: body.name,
-        password: hashedpassword
+    const finduser = await prisma.user.findUnique({
+      where: { email: body.email }
+    })
+    if (!finduser) {
+      const user = await prisma.user.create({
+        data: {
+          email: body.email,
+          name: body.name,
+          password: hashedpassword
+        }
       }
+      )
+      const jwt = await sign({ id: user.id, email: user.email }, c.env.JWT_SECRET);
+      return c.json({
+        token: "Bearer " + jwt,
+        message: "User succesfully signed up"
+      });
     }
-    )
-    const jwt = await sign({ id: user.id, email: user.email }, c.env.JWT_SECRET);
-    return c.json({
-      token: "Bearer " + jwt,
-      message: "User succesfully signed up"
-    });
+    else {
+      c.status(404);
+      return c.json({ Error: "User already exists" });
+    }
   }
   catch (error) {
     c.status(408);
@@ -89,9 +115,6 @@ app.post('/api/v1/signup', async (c) => {
 
 })
 
-app.post('/api/v1/blog', (c) => {
-  return c.text('blog route')
-})
 app.put('/api/v1/blog', (c) => {
   return c.text('Put blog')
 })
