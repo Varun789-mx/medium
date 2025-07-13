@@ -16,7 +16,7 @@ app.get('/test-db', async (c) => {
   const prisma = new PrismaClient({
     datasourceUrl: c.env?.DATABASE_URL,
   }).$extends(withAccelerate());
-  
+
   try {
     const userCount = await prisma.user.count();
     return c.json({ userCount });
@@ -24,9 +24,37 @@ app.get('/test-db', async (c) => {
     return c.json({ error: (error as Error).message }, 500);
   }
 });
+app.post('/api/v1/signin', async (c) => {
+  const prisma = new PrismaClient({
+    datasourceUrl: c.env?.DATABASE_URL,
+  }).$extends(withAccelerate());
+  const body = await c.req.json();
+  try {
+    const GetUser = await prisma.user.findUnique({
+      where: { email: body.email }
+    });
+    if (!GetUser || GetUser.password !== body.password) {
+      c.status(404)
+      return c.json({
+        Error: "Incorrect password or email"
+      });
+    }
+    else {
+      const jwt = await sign({ id: GetUser.id, email: GetUser.email }, c.env.JWT_SECRET);
+      return c.json({
+        token: "Bearer " + jwt,
+        message: "User succesfully logged in"
+      });
+    }
+  }
+  catch (error) {
+    c.status(408);
+    return c.json({ Error: "Internal server error" + error });
+  }
+});
 
 app.post('/api/v1/signup', async (c) => {
-  const prisma =  new PrismaClient({
+  const prisma = new PrismaClient({
     datasourceUrl: c.env?.DATABASE_URL,
   }).$extends(withAccelerate());
   const body = await c.req.json();
@@ -39,8 +67,11 @@ app.post('/api/v1/signup', async (c) => {
       }
     }
     )
-    const jwt = await sign({ id: user.id }, c.env.JWT_SECRET);
-    return c.json({ jwt });
+    const jwt = await sign({ id: user.id, email: user.email }, c.env.JWT_SECRET);
+    return c.json({
+      token: "Bearer " + jwt,
+      message: "User succesfully logged in"
+    });
   }
   catch (error) {
     c.status(408);
@@ -53,9 +84,6 @@ app.post('/api/v1/signup', async (c) => {
 
 app.post('/api/v1/blog', (c) => {
   return c.text('blog route')
-})
-app.post('/api/v1/signup', (c) => {
-  return c.text('Signup route')
 })
 app.put('/api/v1/blog', (c) => {
   return c.text('Put blog')
