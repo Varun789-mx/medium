@@ -87,4 +87,31 @@ blogRouter.post("/add", async (c) => {
     }
 });
 
+blogRouter.get('/blogsAll', async (c) => {
+    try {
+        const userid = c.get('userid');
+        const prisma = new PrismaClient({
+            datasourceUrl: c.env?.DATABASE_URL,
+        }).$extends(withAccelerate());
+        const post = await prisma.post.findMany({
+            where: {
+                authorid: userid,
+            }
+        })
+        if (!post) {
+            c.status(404);
+            return c.json({
+                Error: "Incorrect id or no post exist",
+            });
+        }
+        c.status(200);
+        return c.json({
+            posts: post,
+        })
+    } catch (error) {
+        c.status(500)
+        return c.json({ Error: "Internal server error" + error });
+    }
+})
+
 export default blogRouter;
