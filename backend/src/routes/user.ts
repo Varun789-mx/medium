@@ -1,8 +1,16 @@
 import { Hono } from 'hono'
-import { PrismaClient } from  '../generated/prisma/edge'
+import { PrismaClient } from '../generated/prisma/edge'
 import { withAccelerate } from '@prisma/extension-accelerate'
 import { sign, verify } from 'hono/jwt'
 import bcrypt from 'bcryptjs';
+import { z } from "zod";
+
+const User_schema = z.object({
+  name: z.string({ error: "Name should be a string" }).min(3, { error: "Name should be atleast 3 characters long" }),
+  email: z.email(),
+  password: z.string().min(8, { error: "Password should be atleast 8 characters long" })
+})
+
 
 export const userRouter = new Hono<{
   Bindings: {
@@ -19,17 +27,22 @@ userRouter.post('/signin', async (c) => {
     datasourceUrl: c.env?.DATABASE_URL,
   }).$extends(withAccelerate());
   const body = await c.req.json();
+  const parseduser = User_schema.safeParse({ email: true, password: true });
+  if (!parseduser.success) {
+    c.status(400);
+    return c.json({ Error: "Error in input " })
+  }
   try {
     const GetUser = await prisma.user.findUnique({
-      where: { email: body.email }
+      where: { email: parseduser.data.email }
     });
-    if (!GetUser) {``
+    if (!GetUser) {
       c.status(404)
       return c.json({
         Error: "Incorrect password or email"
       });
     }
-    const isValidpassword = await bcrypt.compare(body.password, GetUser.password);
+    const isValidpassword = await bcrypt.compare(parseduser.data.password, GetUser.password);
     if (isValidpassword) {
       const jwt = await sign({ id: GetUser.id, email: GetUser.email }, c.env.JWT_SECRET);
       return c.json({
@@ -52,17 +65,23 @@ userRouter.post('/signup', async (c) => {
   const prisma = new PrismaClient({
     datasourceUrl: c.env?.DATABASE_URL,
   }).$extends(withAccelerate());
-  const body = await c.req.json();
   try {
-    const hashedpassword = await bcrypt.hash(body.password, 12);
+    const body = await c.req.json();
+    const parseduser = User_schema.safeParse(body);
+    if (!parseduser.success) {
+      c.status(400);
+      return c.json({ Error: "Error in input " })
+
+    }
+    const hashedpassword = await bcrypt.hash(parseduser.data.password, 12);
     const finduser = await prisma.user.findUnique({
-      where: { email: body.email }
+      where: { email: parseduser.data.email }
     })
     if (!finduser) {
       const user = await prisma.user.create({
         data: {
-          email: body.email,
-          name: body.name,
+          email: parseduser.data.email,
+          name: parseduser.data.name,
           password: hashedpassword
         }
       }
