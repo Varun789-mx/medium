@@ -1,7 +1,7 @@
 import { Hono } from 'hono'
 import { PrismaClient } from '../generated/prisma/edge'
 import { withAccelerate } from '@prisma/extension-accelerate'
-import { sign, verify } from 'hono/jwt'
+import { sign } from 'hono/jwt'
 import bcrypt from 'bcryptjs';
 import { z } from "zod";
 
@@ -27,7 +27,8 @@ userRouter.post('/signin', async (c) => {
     datasourceUrl: c.env?.DATABASE_URL,
   }).$extends(withAccelerate());
   const body = await c.req.json();
-  const parseduser = User_schema.safeParse({ email: true, password: true });
+  const signin_schema = User_schema.pick({ email: true, password: true });
+  const parseduser = signin_schema.safeParse(body);
   if (!parseduser.success) {
     c.status(400);
     return c.json({ Error: "Error in input " })
@@ -84,8 +85,7 @@ userRouter.post('/signup', async (c) => {
           name: parseduser.data.name,
           password: hashedpassword
         }
-      }
-      )
+      })
       const jwt = await sign({ id: user.id, email: user.email }, c.env.JWT_SECRET);
       return c.json({
         token: "Bearer " + jwt,
