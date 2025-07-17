@@ -25,7 +25,7 @@ export const userRouter = new Hono<{
 userRouter.post('/signin', async (c) => {
   const prisma = new PrismaClient({
     datasourceUrl: c.env?.DATABASE_URL,
-  }).$extends(withAccelerate());
+  }).$extends(withAccelerate())
   const body = await c.req.json();
   const signin_schema = User_schema.pick({ email: true, password: true });
   const parseduser = signin_schema.safeParse(body);
@@ -37,6 +37,7 @@ userRouter.post('/signin', async (c) => {
     const GetUser = await prisma.user.findUnique({
       where: { email: parseduser.data.email }
     });
+
     if (!GetUser) {
       c.status(404)
       return c.json({
