@@ -113,5 +113,33 @@ blogRouter.get('/blogsAll', async (c) => {
         return c.json({ Error: "Internal server error" + error });
     }
 })
+blogRouter.delete('/blog/delete:id', async (c) => {
+    try {
+        const id = c.req.param('id');
+        const prisma = new PrismaClient({
+            datasourceUrl: c.env?.DATABASE_URL,
+        }).$extends(withAccelerate());
+        const remove_post = await prisma.post.delete({
+            where: {
+                id: id,
+            }
+        })
+        if (!remove_post) {
+            c.status(404);
+            return c.json({
+                msg: "Error in deleting the post",
+            })
+        }
+        c.status(200);
+        return c.json({
+            Msg: "Post removed successfully",
+        })
+    } catch (error) {
+        c.status(500);
+        return c.json({ Msg: "Error in deleting post" + error });
+
+    }
+});
+
 
 export default blogRouter;
