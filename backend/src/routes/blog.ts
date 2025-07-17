@@ -2,6 +2,7 @@ import { Hono } from "hono";
 import { PrismaClient } from "../generated/prisma/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { verify } from "hono/jwt";
+import { z } from "zod";
 
 const blogRouter = new Hono<{
     Bindings: {
@@ -12,7 +13,10 @@ const blogRouter = new Hono<{
         userid: string;
     };
 }>();
-
+const blog_Schema = z.object({
+    title: z.string().min(2, { error: "Title should be atleast 3 characters long" }),
+    content: z.string()
+})
 blogRouter.use("*", async (c, next) => {
     try {
         const header = c.req.header("AUTHORIZATION") || "";
@@ -63,10 +67,15 @@ blogRouter.post("/add", async (c) => {
     try {
         const userid = c.get("userid");
         const body = await c.req.json();
+        const SafeData = blog_Schema.safeParse(body);
+        if (!SafeData.success) {
+            c.status(401);
+            return c.json({ Error: "Invalid inputs" + SafeData.error, })
+        }
         const post = await prisma.post.create({
             data: {
-                title: body.title,
-                content: body.content,
+                title: SafeData.data.title,
+                content: SafeData.data.content,
                 author: {
                     connect: { id: userid }
                 }
@@ -137,7 +146,6 @@ blogRouter.delete('/blog/delete:id', async (c) => {
     } catch (error) {
         c.status(500);
         return c.json({ Msg: "Error in deleting post" + error });
-
     }
 });
 
