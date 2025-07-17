@@ -40,7 +40,7 @@ userRouter.post('/signin', async (c) => {
     if (!GetUser) {
       c.status(404)
       return c.json({
-        Error: "Incorrect password or email"
+        Error: "Incorrect password or email" + parseduser.error,
       });
     }
     const isValidpassword = await bcrypt.compare(parseduser.data.password, GetUser.password);
