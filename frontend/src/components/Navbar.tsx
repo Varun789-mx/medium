@@ -1,54 +1,49 @@
 const Navbarlogin = () => {
     return (
-
-        <header className="flex justify-evenly ">
-            <div className="bg-slate-800">
+        <div className="bg-slate-800 flex justify-between p-4 items-center w-full">
+            <div>
+                <span>
+                    <p className="text-white">Logo</p>
+                </span>
+            </div>
+            <div className="flex justify-evenly my-auto gap-8 align-middle font-semibold  text-white items-center">
                 <div>
                     <span>
-                        <p>Logo</p>
+                        <a href="#" className="focus:font-bold focus:animate-pulse" >
+                            <p>Home</p>
+                        </a>
                     </span>
                 </div>
-                <div className="flex justify-evenly">
-                    <div>
-                        <p>
-                            <a className="text-white">
-                                Home
-                            </a>
-                        </p>
-                    </div>
-                    <div>
-                        <p>
-                            <a className="text-white">
-                                Blogs
-                            </a>
-                        </p>
-                    </div>
-                    <div>
-                        <p>
-                            <a className="text-white">
-                                About
-                            </a>
-                        </p>
-                    </div>
-                    <div>
-                        <p>
-                            <a className="text-white">
-                                Contact us
-                            </a>
-                        </p>
-                    </div>
-                    <div>
-                        <p>
-                            <a className="text-white">
-                                <div className="bg-white p-4 rounded-2xl">
-                                    <p>Subscibe</p>
-                                </div>
-                            </a>
-                        </p>
-                    </div>
+                <div>
+                    <span>
+                        <a href="#" className="focus:font-bold focus:animate-pulse " >
+                            <p>Blog</p>
+                        </a>
+                    </span>
+                </div> <div>
+                    <span>
+                        <a href="#" className="focus:font-bold focus:animate-pulse " >
+                            <p>About</p>
+                        </a>
+                    </span>
+                </div> <div>
+                    <span>
+                        <a href="#" className="focus:font-bold focus:animate-pulse " >
+                            <p>Contact us</p>
+                        </a>
+                    </span>
+                </div>
+                <div>
+                    <p>
+                        <a className="text-slate-800 font-bold">
+                            <div className="bg-white p-2 w-25 rounded-2xl flex justify-center cursor-pointer ">
+                                <span>Subscibe</span>
+                            </div>
+                        </a>
+                    </p>
                 </div>
             </div>
-        </header>
+        </div>
     )
 }
 export default Navbarlogin;
