@@ -1,8 +1,6 @@
 import { Hono } from 'hono'
-import { PrismaClient } from './generated/prisma/edge'
 import { withAccelerate } from '@prisma/extension-accelerate'
-import { sign, verify } from 'hono/jwt'
-import bcrypt from 'bcryptjs';
+import { PrismaClient } from './generated/prisma/edge'
 import userRouter from './routes/user';
 import blogRouter from './routes/blog';
 
@@ -22,5 +20,32 @@ app.get('/', (c) => {
 
 app.route('/api/v1/user', userRouter);
 app.route('/api/v1/blog', blogRouter);
+app.get(`/Allblogs`, async (c) => {
+  const prisma = new PrismaClient({
+    datasourceUrl: c.env?.DATABASE_URL,
+  }).$extends(withAccelerate());
+  try {
+    const posts = await prisma.post.findMany({
+      where: {
+        published: true
+      }
+    })
+    if (!posts) {
+      c.status(404);
+      return c.json({
+        Error: "Server issue",
+      })
+    }
+    else {
+      c.status(200);
+      return c.json({
+        data: posts,
+      })
+    }
+  } catch (error) {
+    c.status(404);
+    return c.json({ Error: "Error in getting posts " + error })
+  }
+});
 
 export default app;

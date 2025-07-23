@@ -72,7 +72,7 @@ userRouter.post('/signup', async (c) => {
     const parseduser = User_schema.safeParse(body);
     if (!parseduser.success) {
       c.status(400);
-      return c.json({ Error: "Error in input " })
+      return c.json({ Error: "Error in input "+ parseduser.error })
 
     }
     const hashedpassword = await bcrypt.hash(parseduser.data.password, 12);
