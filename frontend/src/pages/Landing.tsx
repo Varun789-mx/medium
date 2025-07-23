@@ -1,7 +1,9 @@
 import Navbarlogin from "../components/Navbar";
 import carImage from "../assets/Car_image.png";
+import Allposts from "../components/Allposts";
 
 const LandingPage = () => {
+  
   return (
     <div>
       <Navbarlogin />
@@ -26,7 +28,7 @@ const LandingPage = () => {
               doloremque voluptas quia dolore pariatur? Vitae delectus pariatur
               consectetur rem!
             </p>
-            <button className="mt-8 bg-red-500 text-sm hover:bg-red-600 text-white px-8 py-3 rounded-lg font-semibold  ">
+            <button className="mt-8 flex items-center gap-2 bg-red-500 text-sm hover:bg-red-600 text-white px-8 py-3 rounded-lg font-semibold  ">
               Subscribe <svg
                 className="w-4 h-4 rotate-45"
                 fill="none"
@@ -43,6 +45,10 @@ const LandingPage = () => {
             </button>
           </div>
         </div>
+      </div>
+      <div className="text-4xl font-semibold p-3">All posts</div>
+      <div>
+        <Allposts/>
       </div>
     </div>
   );

@@ -34,13 +34,13 @@ const Navbarlogin = () => {
                     </span>
                 </div>
                 <div>
-                    <p>
-                        <a className="text-slate-800 font-bold">
-                            <div className="bg-white p-2 w-25 rounded-2xl flex justify-center cursor-pointer ">
-                                <span>Subscibe</span>
-                            </div>
-                        </a>
-                    </p>
+
+                    <a className="text-slate-800 font-bold">
+                        <div className="bg-white p-2 w-25 rounded-2xl flex justify-center cursor-pointer ">
+                            <span>Subscibe</span>
+                        </div>
+                    </a>
+
                 </div>
             </div>
         </div>
