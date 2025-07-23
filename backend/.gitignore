@@ -137,6 +137,7 @@ prisma/migrations/
 *.swo
 *~
 
+wrangler.jsonc
 # OS
 .DS_Store
 .DS_Store?
