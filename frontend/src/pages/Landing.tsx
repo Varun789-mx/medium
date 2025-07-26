@@ -3,7 +3,7 @@ import carImage from "../assets/Car_image.png";
 import Allposts from "../components/Allposts";
 
 const LandingPage = () => {
-  
+
   return (
     <div>
       <Navbarlogin />
@@ -13,7 +13,7 @@ const LandingPage = () => {
           backgroundImage: `linear-gradient(90deg,rgba(37, 36, 48, 1) 0%, rgba(9, 9, 121, 0.6) 35%, rgba(0, 212, 255, 0.2) 100%), url(${carImage})`,
         }}
       >
-        <div className="absolute inset-0 flex md:items-center justify-start text-7xl font-bold text-black shadow-inner-2xl shadow-blue-900  ">
+        <div className="absolute inset-0 flex items-center justify-start text-7xl font-bold text-black shadow-inner-2xl shadow-blue-900  ">
           <div className="p-6 ml-8  ">
             <span className="text-orange-400">Your Journey</span>
             <br />
@@ -21,7 +21,7 @@ const LandingPage = () => {
             <br />
             <span className="text-white">Your Journey</span>
 
-            <p className="font-sans text-white text-balance text-sm p-5 md:w-1/3">
+            <p className="font-serif text-white text-sm p-5 w-1/3">
               Lorem, ipsum dolor sit amet consectetur adipisicing elit. Est
               explicabo deleniti excepturi quam dolore, dicta perspiciatis
               dolore. Exercitationem, quaerat laboriosam amet ducimus illum
@@ -45,10 +45,10 @@ const LandingPage = () => {
             </button>
           </div>
         </div>
-      </div> 
-  <div className="text-4xl font-semibold p-3">All posts</div>
+      </div>
+      <div className="text-4xl font-semibold p-3">All posts</div>
       <div>
-        <Allposts/>
+        <Allposts />
       </div>
     </div>
   );
