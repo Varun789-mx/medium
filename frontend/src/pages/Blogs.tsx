@@ -9,7 +9,7 @@ const BlogsPage = ({ blog }: { blog: Blogprop }) => {
                 <p className="font-bold text-3xl p-2">{blog.title}</p>
                 <img src={blog.picture} className="w-full p-3" />
                 {newContent.filter((_, i) => i % 3 === 0).map((_, i) => (
-                    <p className="font-serif mb-4" key={i}>
+                    <p className="font-[sans-serif] p-2 text-xl mb-4" key={i}>
                         {newContent.slice(i * 6, i * 6 + 6).join(". ") + "."}
                     </p>
                 ))}
