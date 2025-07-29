@@ -21,7 +21,6 @@ import Addblog from './pages/Addblog';
 function App() {
   return (
     <>
-      <Navbarlogin />
       <Addblog />
     </>
   )
