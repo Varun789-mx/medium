@@ -1,7 +1,9 @@
-import React from 'react';
+import { Route } from 'lucide-react';
 import './App.css'
 import Navbarlogin from './components/Navbar'
 import Addblog from './pages/Addblog';
+import { BrowserRouter,Routes,Route } from "react-router-dom";
+import Signup from './pages/Signup';
 
 
 
@@ -21,6 +23,12 @@ import Addblog from './pages/Addblog';
 function App() {
   return (
     <>
+      <BrowserRouter>
+      </BrowserRouter>
+        <Routes>
+          <Route path='/signup' element={<Signup/>}/>
+
+        </Routes>
       <Addblog />
     </>
   )
