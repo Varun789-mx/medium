@@ -1,6 +1,8 @@
+import axios from "axios";
 import { useEffect, useState } from "react";
 import { BACKEND_URL } from "../config";
-import axios from "axios";
+// import { BACKEND_URL } from "../config";
+// import axios from "axios";
 
 interface posts {
   id: string;
@@ -85,39 +87,40 @@ const testPosts: posts[] = [
     authorid: "author-202",
   },
 ];
-
-
 const Allposts = () => {
   const [posts, setposts] = useState<posts[]>([]);
+  // const Gotopage = () => {
+
+  // }
   useEffect(() => {
-    //   axios
-    //     .get(`${BACKEND_URL}/Allblogs`)
-    //     .then((res: posts) => setposts(res.));
-    setposts(testPosts);
+    axios.get(`${BACKEND_URL}/Allblogs`).then(res => setposts(res.data.data)).catch(e => console.log(e));
   }, []);
+
 
   return (
     <>
       {" "}
       {posts.map((post) => (
-        <div className="mx-auto max-w-full overflow-hidden rounded-xl bg-white shadow-md md:max-w-full p-5 m-4 gap-4">
+        <div key={post.id} className="mx-auto max-w-full overflow-hidden rounded-xl flex justify-center bg-white shadow-md md:max-w-full p-5 m-4 gap-4">
           <div className="md:flex justify-evenly">
             <div className="md:shrink-0 pl-4">
               {" "}
               <img
-                src={post.picture}
+                src={post?.picture}
                 className="h-48 max-w-full object-cover md:h-full md:w-80"
               />
             </div>
 
-            <div className="p-8">
-              <div className="text-sm font-semibold tracking-wide  uppercase">
-                <p className="mt-1 block pl-2 leading-tight font-bold text-2xl hover:underline">
-                  {post.title}
-                </p>
-                <p className="font-arial  m-5">{post.content}</p>
+            <div className="p-8 ">
+              <div className="text-sm font-semibold tracking-wide ">
+                <div className="uppercase tracking-wide text-sm text-indigo-500 font-semibold mb-2">
+                  Article
+                </div>
+                <h2 className="text-2xl font-bold text-gray-900 mb-4 hover:text-indigo-600 transition-colors duration-200">{post.title}
+                </h2>
+                <p className="text-gray-600 leading-relaxed mb-6 line-clamp-3">{post.content}</p>
               </div>
-              <button className="mt-8 p-4 flex items-center gap-2 bg-red-500 text-sm hover:bg-red-600 text-white px-8 py-3 rounded-lg font-semibold  ">
+              <button className="mt-8 p-4 flex items-center gap-2 bg-red-500 text-sm hover:bg-red-600 text-white px-8 py-3 rounded-lg font-semibold  " >
                 Read full article
                 <svg
                   className="w-4 h-4 rotate-45"

@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Signup from './pages/Signup';
 import Login from './pages/Login';
 import LandingPage from './pages/Landing';
+import Addblog from './pages/Addblog';
 
 
 // Test prop with the new content
@@ -22,12 +23,14 @@ function App() {
   return (
     <>
       <BrowserRouter>
-      </BrowserRouter>
+      
       <Routes>
         <Route path='/signup' element={<Signup />} />
         <Route path='/login' element={<Login />} />
+        <Route path='/Addblog' element={<Addblog />} />
         <Route path='/' element={<LandingPage />} />
       </Routes>
+      </BrowserRouter>
     </>
   )
 }
