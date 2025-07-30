@@ -1,10 +1,8 @@
-import { Route } from 'lucide-react';
 import './App.css'
-import Navbarlogin from './components/Navbar'
-import Addblog from './pages/Addblog';
-import { BrowserRouter,Routes,Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Signup from './pages/Signup';
-
+import Login from './pages/Login';
+import LandingPage from './pages/Landing';
 
 
 // Test prop with the new content
@@ -25,11 +23,11 @@ function App() {
     <>
       <BrowserRouter>
       </BrowserRouter>
-        <Routes>
-          <Route path='/signup' element={<Signup/>}/>
-
-        </Routes>
-      <Addblog />
+      <Routes>
+        <Route path='/signup' element={<Signup />} />
+        <Route path='/login' element={<Login />} />
+        <Route path='/' element={<LandingPage />} />
+      </Routes>
     </>
   )
 }
