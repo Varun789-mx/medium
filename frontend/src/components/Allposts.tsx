@@ -89,6 +89,15 @@ const testPosts: posts[] = [
 ];
 const Allposts = () => {
   const [posts, setposts] = useState<posts[]>([]);
+    const [isDark, setIsDark] = useState(true);
+
+  useEffect(() => {
+    if (isDark) {
+      document.body.classList.add('dark');
+    } else {
+      document.body.classList.remove('dark');
+    }
+  }, [isDark]);
   // const Gotopage = () => {
 
   // }
