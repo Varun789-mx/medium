@@ -2,17 +2,26 @@ import axios from "axios";
 import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 import { BACKEND_URL } from "../config";
+import useTheme from "../Hooks/useTheme";
 
 
 const Signup = () => {
     const [showPassword, setshowPassword] = useState(false);
     const [loading, setloading] = useState(false);
+    const [isDark, setIsDark] = useTheme();
     const [formData, setformData] = useState({
         name: "",
         email: "",
         password: "",
         confirmpassword: ""
     })
+    const handleTheme = ()=> { 
+        if(!isDark) { 
+        ()=>setIsDark("dark");
+        }
+        else { 
+                  }
+    }
     const handleformData = (e: any) => {
         const { name, type, value, checked } = e.target;
         setformData(prevdata => ({
@@ -49,6 +58,7 @@ const Signup = () => {
     return (
 
         <div className="flex h-screen w-full bg-gray-50 flex-col justify-center dark:bg-gray-800 align-center items-center">
+            <button className="bg-blue-400 " onClick={handleTheme}>{isDark?"Dark":"light"}</button>
             <div className=" shadow-2xl shadow-slate-800 bg-gray-50 dark:bg-gray-900 rounded-2xl w-full md:w-1/3 p-4">
 
                 <h1 className="text-xl flex justify-center font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">

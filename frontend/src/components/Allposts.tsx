@@ -1,8 +1,8 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { BACKEND_URL } from "../config";
-// import { BACKEND_URL } from "../config";
-// import axios from "axios";
+import { Commet } from "react-loading-indicators";
+import useTheme from "../Hooks/useTheme";
 
 interface posts {
   id: string;
@@ -89,20 +89,21 @@ const testPosts: posts[] = [
 ];
 const Allposts = () => {
   const [posts, setposts] = useState<posts[]>([]);
-    const [isDark, setIsDark] = useState(true);
+    const [isDark, setIsDark] = useTheme();
+    const [loading,setloading] = useState(true);
 
-  useEffect(() => {
-    if (isDark) {
-      document.body.classList.add('dark');
-    } else {
-      document.body.classList.remove('dark');
-    }
-  }, [isDark]);
-  // const Gotopage = () => {
+  // useEffect(() => {
+  //   if (isDark) {
+  //     document.body.classList.add('dark');
+  //   } else {
+  //     document.body.classList.remove('dark');
+  //   }
+  // }, [isDark]);
+  // // const Gotopage = () => {
 
-  // }
+  // // }
   useEffect(() => {
-    axios.get(`${BACKEND_URL}/Allblogs`).then(res => setposts(res.data.data)).catch(e => console.log(e));
+    axios.get(`${BACKEND_URL}/Allblogs`).then(res => setposts(res.data.data)).then(()=> !posts?setloading(true):setloading(false)).catch(e => console.log(e));
   }, []);
 
 
@@ -114,10 +115,11 @@ const Allposts = () => {
           <div className="md:flex justify-evenly">
             <div className="md:shrink-0 pl-4">
               {" "}
-              <img
-                src={post?.picture}
+      {loading? <Commet color="#0000FF" size="medium" text="" textColor="" />:  <img
+                src={post.picture}
                 className="h-48 max-w-full object-cover md:h-full md:w-80"
-              />
+              />}
+             
             </div>
 
             <div className="p-8 ">

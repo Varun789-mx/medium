@@ -1,6 +1,22 @@
 import { Bell, EllipsisVertical } from "lucide-react";
+import { useState } from "react";
 
 const Addblog = () => {
+    const [postdata,setpostdata] = useState({
+        title:"",
+        content:"",
+        picture:"",
+        published:"",
+        authorid:""
+    })
+     function Avatar({ name, size = "small" }: { name: string, size?: "small" | "big" }) {
+    return <div className={`relative inline-flex items-center justify-center overflow-hidden bg-gray-600 rounded-full ${size === "small" ? "w-6 h-6" : "w-10 h-10"}`}>
+    <span className={`${size === "small" ? "text-xs" : "text-md"} font-extralight text-gray-600 dark:text-gray-300`}>
+        {name[0]}
+    </span>
+</div>
+}
+
     return (
         <div>
             <nav className="p-2">
@@ -20,7 +36,7 @@ const Addblog = () => {
                         <button className="bg-orange-500 rounded-2xl w-25 p-2 shadow-xl shadow-blue-200 font-bold text-white focus:bg-blue-600">Publish</button>
                         <EllipsisVertical />
                         <Bell />
-                        <p>User img</p>
+                       <Avatar name="Jaun" size="small" />
                     </div>
                 </div>
             </nav>
