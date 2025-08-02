@@ -5,7 +5,13 @@ import userRouter from './routes/user';
 import blogRouter from './routes/blog';
 import { cors } from 'hono/cors';
 
-
+interface blog { 
+  title:string;
+  picture?:string ;
+  content?:string;
+  published:boolean;
+  authorid?:string;
+}
 const app = new Hono<{
   Bindings: {
     DATABASE_URL: string
@@ -24,7 +30,10 @@ app.get('/', (c) => {
 
 app.route('/api/v1/user', userRouter);
 app.route('/api/v1/blog', blogRouter);
-app.get(`/Allblogs`, async (c) => {
+
+
+
+app.get("/Allblogs", async (c) => {
   const prisma = new PrismaClient({
     datasourceUrl: c.env?.DATABASE_URL,
   }).$extends(withAccelerate());
@@ -51,5 +60,6 @@ app.get(`/Allblogs`, async (c) => {
     return c.json({ Error: "Error in getting posts " + error })
   }
 });
+
 
 export default app;

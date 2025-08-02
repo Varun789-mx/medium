@@ -4,6 +4,7 @@ import Signup from './pages/Signup';
 import Login from './pages/Login';
 import LandingPage from './pages/Landing';
 import Addblog from './pages/Addblog';
+import BlogsPage from './pages/Blogs';
 
 
 // Test prop with the new content
@@ -26,6 +27,7 @@ function App() {
       
       <Routes>
         <Route path='/signup' element={<Signup />} />
+        <Route path='/blog/:id' element={<BlogsPage/>}/>
         <Route path='/login' element={<Login />} />
         <Route path='/Addblog' element={<Addblog />} />
         <Route path='/' element={<LandingPage />} />

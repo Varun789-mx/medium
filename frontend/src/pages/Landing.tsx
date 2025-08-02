@@ -46,7 +46,6 @@ const LandingPage = () => {
           </div>
         </div>
       </div>
-      <div className="text-4xl font-semibold p-3">All posts</div>
       <div>
         <Allposts />
       </div>

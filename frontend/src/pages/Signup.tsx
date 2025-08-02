@@ -15,12 +15,12 @@ const Signup = () => {
         password: "",
         confirmpassword: ""
     })
-    const handleTheme = ()=> { 
-        if(!isDark) { 
-        ()=>setIsDark("dark");
+    const handleTheme = () => {
+        if (!isDark) {
+
         }
-        else { 
-                  }
+        else {
+        }
     }
     const handleformData = (e: any) => {
         const { name, type, value, checked } = e.target;
@@ -58,7 +58,7 @@ const Signup = () => {
     return (
 
         <div className="flex h-screen w-full bg-gray-50 flex-col justify-center dark:bg-gray-800 align-center items-center">
-            <button className="bg-blue-400 " onClick={handleTheme}>{isDark?"Dark":"light"}</button>
+            <button className="bg-blue-400 " onClick={handleTheme}>{isDark ? "Dark" : "light"}</button>
             <div className=" shadow-2xl shadow-slate-800 bg-gray-50 dark:bg-gray-900 rounded-2xl w-full md:w-1/3 p-4">
 
                 <h1 className="text-xl flex justify-center font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">

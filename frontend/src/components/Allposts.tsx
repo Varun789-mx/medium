@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { BACKEND_URL } from "../config";
 import { Commet } from "react-loading-indicators";
-import useTheme from "../Hooks/useTheme";
+
 
 interface posts {
   id: string;
@@ -89,19 +89,10 @@ const testPosts: posts[] = [
 ];
 const Allposts = () => {
   const [posts, setposts] = useState<posts[]>([]);
-    const [isDark, setIsDark] = useTheme();
+    
     const [loading,setloading] = useState(true);
 
-  // useEffect(() => {
-  //   if (isDark) {
-  //     document.body.classList.add('dark');
-  //   } else {
-  //     document.body.classList.remove('dark');
-  //   }
-  // }, [isDark]);
-  // // const Gotopage = () => {
 
-  // // }
   useEffect(() => {
     axios.get(`${BACKEND_URL}/Allblogs`).then(res => setposts(res.data.data)).then(()=> !posts?setloading(true):setloading(false)).catch(e => console.log(e));
   }, []);
@@ -110,6 +101,9 @@ const Allposts = () => {
   return (
     <>
       {" "}
+      <div className="font-semibold p-2 pl-5 text-2xl ">
+All posts
+      </div>
       {posts.map((post) => (
         <div key={post.id} className="mx-auto max-w-full overflow-hidden rounded-xl flex justify-center bg-white shadow-md md:max-w-full p-5 m-4 gap-4">
           <div className="md:flex justify-evenly">

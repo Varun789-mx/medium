@@ -1,11 +1,5 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["driverAdapters"]
 }
 
@@ -22,12 +16,12 @@ model user {
   posts    post[]
 }
 
-model post { 
+model post {
   id        String  @id @default(uuid())
-  title     String
   content   String
-  picture   String @default("")
   published Boolean @default(false)
-  author    user  @relation(fields: [authorid], references: [id])
+  title     String
   authorid  String
+  picture   String  @default("")
+  author    user    @relation(fields: [authorid], references: [id])
 }

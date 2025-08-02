@@ -1,7 +1,50 @@
+import { useParams } from "react-router-dom";
+import { BACKEND_URL } from "../config";
 import type { Blogprop } from "../types";
+import axios from "axios";
+import { useState, useEffect } from "react";
 
-const BlogsPage = ({ blog }: { blog: Blogprop }) => {
-    const newContent = blog.content.split(". ");
+const BlogsPage = () => {
+    const { id } = useParams();
+    const [blog, setBlog] = useState<Blogprop | null>(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        const getBlog = async () => {
+            try {
+                setLoading(true);
+                const response = await axios.get(`${BACKEND_URL}/api/v1/blog/${id}`, {
+                    headers: {
+                        Authorization: localStorage.getItem("token")
+                    }
+                });
+                setBlog(response.data.posts);
+                console.log(response.data);
+                 console.log(blog,"From blog")
+            } catch (error) {
+                console.error(error);
+                setError("Failed to fetch blog");
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        if (id) {
+            getBlog();
+        }
+    }, [id]);
+
+    if (loading) {
+        return <div className="h-screen w-full flex items-center justify-center">Loading...</div>;
+    }
+
+    if (!blog) {
+        return <div className="h-screen w-full flex items-center justify-center">Error: { error ||"Blog not found"}</div>;
+    }
+
+ 
+ const newContent = blog.content.split(". ");
     return (
         <div className="h-screen w-full flex">
 
@@ -20,12 +63,12 @@ const BlogsPage = ({ blog }: { blog: Blogprop }) => {
                 <div className="w-full flex  justify-evenly">
                     <div className="w-full ">
                         <img className=" w-12 block rounded-full"
-                            src={blog.author.profileimg} />
+                            src={blog.author?.profileimg} />
                     </div>
                     <div>
                         <h2 className="w-full font-bold  space-x-1.5">{blog.author.name}</h2>
                         <p>
-                            {blog.author.bio}
+                            {blog.author?.bio}
                         </p>
                     </div>
                 </div>

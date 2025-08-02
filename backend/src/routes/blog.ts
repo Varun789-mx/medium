@@ -96,58 +96,60 @@ blogRouter.post("/add", async (c) => {
     }
 });
 
-blogRouter.get('/blogsAll', async (c) => {
+blogRouter.get("/allblog", async (c) => {
+    const prisma = new PrismaClient({
+        datasourceUrl: c.env?.DATABASE_URL,
+    }).$extends(withAccelerate());
     try {
-        const userid = c.get('userid');
-        const prisma = new PrismaClient({
-            datasourceUrl: c.env?.DATABASE_URL,
-        }).$extends(withAccelerate());
         const post = await prisma.post.findMany({
             where: {
-                authorid: userid,
+                published: true,
             }
         })
         if (!post) {
             c.status(404);
             return c.json({
-                Error: "Incorrect id or no post exist",
-            });
+                Error: "Error in post",
+            })
         }
-        c.status(200);
+        c.status(200)
         return c.json({
-            posts: post,
+            post: post,
+        })
+    } catch (error) {
+        c.status(402)
+        return c.json({ Error: "Error" + error })
+    }
+})
+
+blogRouter.get("/:id", async (c) => {
+    const prisma = new PrismaClient({
+        datasourceUrl: c.env?.DATABASE_URL,
+    }).$extends(withAccelerate());
+    try {
+        const id = c.req.param("id");
+          if (!id) {
+            return c.json({ error: "Post ID is required" }, 400);
+        }
+        const posts = await prisma.post.findUnique({
+            where: {
+                id: id
+            }
+        })
+        if (!posts) {
+            c.status(404);
+            return c.json({ Error: "Error in getting posts",
+                id:id,
+                posts:posts
+             })
+        }
+        c.status(200)
+        return c.json({
+            posts: posts
         })
     } catch (error) {
         c.status(500)
-        return c.json({ Error: "Internal server error" + error });
+        return c.json({ Error: "Error" + error })
     }
 })
-blogRouter.delete('/blog/delete:id', async (c) => {
-    try {
-        const id = c.req.param('id');
-        const prisma = new PrismaClient({
-            datasourceUrl: c.env?.DATABASE_URL,
-        }).$extends(withAccelerate());
-        const remove_post = await prisma.post.delete({
-            where: {
-                id: id,
-            }
-        })
-        if (!remove_post) {
-            c.status(404);
-            return c.json({
-                msg: "Error in deleting the post",
-            })
-        }
-        c.status(200);
-        return c.json({
-            Msg: "Post removed successfully",
-        })
-    } catch (error) {
-        c.status(500);
-        return c.json({ Msg: "Error in deleting post" + error });
-    }
-});
-
-
 export default blogRouter;

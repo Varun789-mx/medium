@@ -106,5 +106,33 @@ userRouter.post('/signup', async (c) => {
   }
 
 })
+userRouter.get("/Allblogs", async (c) => {
+  const prisma = new PrismaClient({
+    datasourceUrl: c.env?.DATABASE_URL,
+  }).$extends(withAccelerate());
+  try {
+    const posts = await prisma.post.findMany({
+      where: {
+        published: true
+      }
+    })
+    if (!posts) {
+      c.status(404);
+      return c.json({
+        Error: "Server issue",
+      })
+    }
+    else {
+      c.status(200);
+      return c.json({
+        data: posts,
+      })
+    }
+  } catch (error) {
+    c.status(404);
+    return c.json({ Error: "Error in getting posts " + error })
+  }
+});
+
 
 export default userRouter
