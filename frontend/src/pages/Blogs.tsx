@@ -20,7 +20,7 @@ const BlogsPage = () => {
                     }
                 });
                 setBlog(response.data.posts);
-                console.log(response.data);
+                
                  console.log(blog,"From blog")
             } catch (error) {
                 console.error(error);
@@ -66,7 +66,7 @@ const BlogsPage = () => {
                             src={blog.author?.profileimg} />
                     </div>
                     <div>
-                        <h2 className="w-full font-bold  space-x-1.5">{blog.author.name}</h2>
+                        <h2 className="w-full font-bold  space-x-1.5">{blog.author?.name}</h2>
                         <p>
                             {blog.author?.bio}
                         </p>

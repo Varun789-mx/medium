@@ -47,7 +47,7 @@ const Login = () => {
         setLoading(true);
 
         try {
-            // Replace this with your actual API call using fetch or axios
+            
             const response = await axios.post(`${BACKEND_URL}/api/v1/user/signin`, formData, {
                 headers: {
                     'Content-Type': 'application/json',
@@ -147,7 +147,7 @@ const Login = () => {
                 </div>
 
                 <p className="text-sm font-semibold text-gray-700 m-4 text-center dark:text-white">
-                    Don't have an account? <a href="#" className="font-medium text-blue-600 hover:underline dark:text-blue-500">Sign up here</a>
+                    Don't have an account? <a href="signup" className="font-medium text-blue-600 hover:underline dark:text-blue-500">Sign up here</a>
                 </p>
             </div>
         </div>

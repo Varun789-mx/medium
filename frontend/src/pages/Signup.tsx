@@ -3,11 +3,13 @@ import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 import { BACKEND_URL } from "../config";
 import useTheme from "../Hooks/useTheme";
+import { useNavigate } from "react-router-dom";
 
 
 const Signup = () => {
     const [showPassword, setshowPassword] = useState(false);
     const [loading, setloading] = useState(false);
+    const navigate = useNavigate();
     const [isDark, setIsDark] = useTheme();
     const [formData, setformData] = useState({
         name: "",
@@ -29,7 +31,7 @@ const Signup = () => {
             [name]: type === 'checkbox' ? checked : value,
         }))
     }
-    const handlesubmit = () => {
+    const handlesubmit = async () => {
         if (!formData.email || !formData.password || !formData.password || !formData.confirmpassword) {
             alert("Please fill in all fields");
             return;
@@ -45,7 +47,11 @@ const Signup = () => {
         }
         try {
             setloading(true);
-            axios.post(`${BACKEND_URL}/api/v1/user/signup`, formData).then((res) => alert(res.data)).catch((error) => alert(error));
+          const response =  await axios.post(`${BACKEND_URL}/api/v1/user/signup`, formData)
+          const jwt = response.data.token;
+          localStorage.setItem("token",jwt);
+          navigate('/');
+          
         } catch (error) {
             console.log(error);
             return;

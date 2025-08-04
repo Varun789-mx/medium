@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { BACKEND_URL } from "../config";
 import { Commet } from "react-loading-indicators";
+import { useNavigate } from "react-router-dom";
 
 
 interface posts {
@@ -89,12 +90,12 @@ const testPosts: posts[] = [
 ];
 const Allposts = () => {
   const [posts, setposts] = useState<posts[]>([]);
-    
-    const [loading,setloading] = useState(true);
+  const navigate = useNavigate();
+  const [loading, setloading] = useState(true);
 
 
   useEffect(() => {
-    axios.get(`${BACKEND_URL}/Allblogs`).then(res => setposts(res.data.data)).then(()=> !posts?setloading(true):setloading(false)).catch(e => console.log(e));
+    axios.get(`${BACKEND_URL}/Allblogs`).then(res => setposts(res.data.data)).then(() => !posts ? setloading(true) : setloading(false)).catch(e => console.log(e));
   }, []);
 
 
@@ -102,18 +103,18 @@ const Allposts = () => {
     <>
       {" "}
       <div className="font-semibold p-2 pl-5 text-2xl ">
-All posts
+        All posts
       </div>
       {posts.map((post) => (
         <div key={post.id} className="mx-auto max-w-full overflow-hidden rounded-xl flex justify-center bg-white shadow-md md:max-w-full p-5 m-4 gap-4">
           <div className="md:flex justify-evenly">
             <div className="md:shrink-0 pl-4">
               {" "}
-      {loading? <Commet color="#0000FF" size="medium" text="" textColor="" />:  <img
+              {loading ? <Commet color="#0000FF" size="medium" text="" textColor="" /> : <img
                 src={post.picture}
                 className="h-48 max-w-full object-cover md:h-full md:w-80"
               />}
-             
+
             </div>
 
             <div className="p-8 ">
@@ -125,7 +126,9 @@ All posts
                 </h2>
                 <p className="text-gray-600 leading-relaxed mb-6 line-clamp-3">{post.content}</p>
               </div>
-              <button className="mt-8 p-4 flex items-center gap-2 bg-red-500 text-sm hover:bg-red-600 text-white px-8 py-3 rounded-lg font-semibold  " >
+              <button className="mt-8 p-4 flex items-center gap-2 bg-red-500 text-sm hover:bg-red-600 text-white px-8 py-3 rounded-lg font-semibold" onClick={() => {
+                navigate(`/blog/${post.id}`)
+              }} >
                 Read full article
                 <svg
                   className="w-4 h-4 rotate-45"
