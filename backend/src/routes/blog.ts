@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import { PrismaClient } from "../generated/prisma/edge"
+import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { verify } from "hono/jwt";
 import { z } from "zod";
@@ -140,15 +140,16 @@ blogRouter.get("/:id", async (c) => {
                 title: true,
                 content: true,
                 published: true,
-                authorid: true,
-                author: {
-                    select: {
-                        id: true,
-                        name: true,
+                authorid: true, 
+                author:{
+                    select:{
+                        id:true,
+                        name:true,
+                        bio:true,
+                        profilepic:true,
                     }
                 }
-
-            }
+            },
         })
         if (!posts) {
             c.status(404);

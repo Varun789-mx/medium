@@ -184,3 +184,7 @@ worker-configuration.d.ts
 
 # Local development
 .dev.vars
+
+/src/generated/prisma
+
+/src/generated/prisma
