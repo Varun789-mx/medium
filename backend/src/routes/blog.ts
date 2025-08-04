@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import { PrismaClient } from "../generated/prisma/edge";
+import { PrismaClient } from "../generated/prisma/edge"
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { verify } from "hono/jwt";
 import { z } from "zod";
@@ -128,20 +128,35 @@ blogRouter.get("/:id", async (c) => {
     }).$extends(withAccelerate());
     try {
         const id = c.req.param("id");
-          if (!id) {
+        if (!id) {
             return c.json({ error: "Post ID is required" }, 400);
         }
         const posts = await prisma.post.findUnique({
             where: {
                 id: id
+            },
+            select: {
+                id: true,
+                title: true,
+                content: true,
+                published: true,
+                authorid: true,
+                author: {
+                    select: {
+                        id: true,
+                        name: true,
+                    }
+                }
+
             }
         })
         if (!posts) {
             c.status(404);
-            return c.json({ Error: "Error in getting posts",
-                id:id,
-                posts:posts
-             })
+            return c.json({
+                Error: "Error in getting posts",
+                id: id,
+                posts: posts
+            })
         }
         c.status(200)
         return c.json({
