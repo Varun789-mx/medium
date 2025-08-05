@@ -135,22 +135,16 @@ blogRouter.get("/:id", async (c) => {
             where: {
                 id: id
             },
-            select: {
-                id: true,
-                title: true,
-                content: true,
-                published: true,
-                authorid: true, 
-                author:{
-                    select:{
-                        id:true,
-                        name:true,
-                        bio:true,
-                        profilepic:true,
-                    }
-                }
-            },
-        })
+           include: {
+        author: {
+          select: {
+            name: true,
+            bio: true,
+            profilepic: true
+          }
+        }
+      }
+    })
         if (!posts) {
             c.status(404);
             return c.json({
