@@ -52,10 +52,11 @@ const Addblog = () => {
         <div className="dark:bg-slate-700">
             <nav className="p-2 ">
                 <div className=" text-black flex justify-between shadow-xl shadow-blue-100 items-center">
-                    <div className="flex justify-between gap-4 p-4 cursor-pointer">
-                        <p className="font-bold">
-                            Logo
-                        </p>
+                    <div className="flex justify-between gap-4 p-4 cursor-pointer items-center">
+                        <div className="flex gap-2 ">
+                            <img src="https://play-lh.googleusercontent.com/amdVXxmfzFRYjoCFSVcfuHjR6IVUf6GSelWcJYfWTJPtsdNrTX8BHRchlcYpmFe1xNyl=w480-h960-rw" className="h-8 w-auto object-contain" />
+                            <p className=" text-2xl font-[sans-serif]">SocialCar</p>
+                        </div>
                         <p>
                             Drafts in Harsh's
                         </p>

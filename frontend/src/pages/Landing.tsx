@@ -1,9 +1,10 @@
 import Navbarlogin from "../components/Navbar";
 import carImage from "../assets/Car_image.png";
 import Allposts from "../components/Allposts";
+import { useNavigate } from "react-router-dom";
 
 const LandingPage = () => {
-
+const navigate = useNavigate();
   return (
     <div>
       <Navbarlogin />
@@ -21,14 +22,14 @@ const LandingPage = () => {
             <br />
             <span className="text-white">Your Journey</span>
 
-            <p className="font-serif text-white text-sm p-5 w-1/3">
+            <p className="font-sans text-white text-sm p-5 w-1/3 font-semibold">
               Lorem, ipsum dolor sit amet consectetur adipisicing elit. Est
               explicabo deleniti excepturi quam dolore, dicta perspiciatis
               dolore. Exercitationem, quaerat laboriosam amet ducimus illum
               doloremque voluptas quia dolore pariatur? Vitae delectus pariatur
               consectetur rem!
             </p>
-            <button className="mt-8 flex items-center gap-2 bg-red-500 text-sm hover:bg-red-600 text-white px-8 py-3 rounded-lg font-semibold  ">
+            <button className="mt-8 flex items-center gap-2 bg-red-500 text-sm hover:bg-red-600 text-white px-8 py-3 rounded-lg font-semibold " onClick={() => navigate('/login')}>
               Subscribe <svg
                 className="w-4 h-4 rotate-45"
                 fill="none"

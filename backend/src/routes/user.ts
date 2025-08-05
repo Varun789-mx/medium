@@ -4,6 +4,7 @@ import { withAccelerate } from '@prisma/extension-accelerate'
 import { sign } from 'hono/jwt'
 import bcrypt from 'bcryptjs';
 import { z } from "zod";
+import { startTime } from 'hono/timing';
 
 const User_schema = z.object({
   name: z.string({ error: "Name should be a string" }).min(3, { error: "Name should be atleast 3 characters long" }),
@@ -39,9 +40,10 @@ userRouter.post('/signin', async (c) => {
     });
 
     if (!GetUser) {
-      c.status(404)
+      c.status(401)
       return c.json({
         Error: "Incorrect password or email" + parseduser.error,
+        status:401
       });
     }
     const isValidpassword = await bcrypt.compare(parseduser.data.password, GetUser.password);
@@ -49,7 +51,7 @@ userRouter.post('/signin', async (c) => {
       const jwt = await sign({ id: GetUser.id, email: GetUser.email }, c.env.JWT_SECRET);
       return c.json({
         token: "Bearer " + jwt,
-        message: "User succesfully logged in"
+        status: 200
       });
     }
     else {
@@ -90,7 +92,7 @@ userRouter.post('/signup', async (c) => {
       const jwt = await sign({ id: user.id, email: user.email }, c.env.JWT_SECRET);
       return c.json({
         token: "Bearer " + jwt,
-        message: "User succesfully signed up"
+        status:200
       });
     }
     else {

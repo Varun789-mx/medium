@@ -1,6 +1,6 @@
 export interface user {
     name: string;
-    profileimg: string;
+    profilepic: string;
     bio: string;
 }
 export interface Blogprop {

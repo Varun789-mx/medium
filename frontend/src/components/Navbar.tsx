@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Hamburger from "hamburger-react";
 import { useNavigate } from "react-router-dom";
+import logo from "../assets/Logo.png"
 
 const Navbarlogin = () => {
   const [isopen, setisopen] = useState(false);
@@ -9,9 +10,10 @@ const Navbarlogin = () => {
     <header className="">
       <div className="  bg-slate-800  md:flex justify-between p-4 items-center w-full ">
         <div className="md:flex md:justify-center">
-          <span>
-            <p className="text-white">Logo</p>
-          </span>
+          <div className="flex gap-2 ">
+           <img src="https://play-lh.googleusercontent.com/amdVXxmfzFRYjoCFSVcfuHjR6IVUf6GSelWcJYfWTJPtsdNrTX8BHRchlcYpmFe1xNyl=w480-h960-rw" className="h-8 w-auto object-contain"  />
+           <p className="text-white text-3xl font-[sans-serif]">SocialCar</p>
+          </div>
         </div>
         <div className=" hidden md:flex justify-evenly my-auto gap-8 align-middle font-semibold  text-white items-center">
           <div>
@@ -43,7 +45,7 @@ const Navbarlogin = () => {
             </span>
           </div>
           <div>
-            <button onClick={() => navigate('/login')} className="bg-white text-black text-sm font-bold font-sans p-2 rounded-2xl focus:bg-slate-300 transition-colors duration-300">
+            <button onClick={() => navigate('/login')} className="bg-white p-2  text-black font-bold rounded-2xl focus:bg-slate-300 transition-colors duration-300">
               Subscribe
             </button>
           </div>

@@ -1,25 +1,26 @@
 import axios from "axios";
 import { Eye, EyeOff } from "lucide-react";
-import { useState ,useEffect} from "react";
+import { useState, useEffect } from "react";
 import { BACKEND_URL } from "../config";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
     const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
+
     const [formData, setFormData] = useState({
         email: "",
         password: ""
     });
-      const [isDark, setIsDark] = useState(true);
+    const [isDark, setIsDark] = useState(true);
 
-  useEffect(() => {
-    if (isDark) {
-      document.body.classList.add('dark');
-    } else {
-      document.body.classList.remove('dark');
-    }
-  }, [isDark]);
+    useEffect(() => {
+        if (isDark) {
+            document.body.classList.add('dark');
+        } else {
+            document.body.classList.remove('dark');
+        }
+    }, [isDark]);
     const [loading, setLoading] = useState(false);
 
     const handleFormData = (e: any) => {
@@ -47,34 +48,41 @@ const Login = () => {
         setLoading(true);
 
         try {
-            
+
             const response = await axios.post(`${BACKEND_URL}/api/v1/user/signin`, formData, {
                 headers: {
                     'Content-Type': 'application/json',
                 }
             })
-            const jwt = response.data.token;
-            localStorage.setItem("token",jwt);
-            navigate("/");
+            if (response.data.status === 200) {
+                console.log(response);
+                const jwt = response.data.token;
+                localStorage.setItem("token", jwt);
+                navigate("/");
+            }
+            if (response.data.status === 401) {
+                alert("Incorrect Email or Password")
+                return;
+            }
 
         } catch (error) {
             console.error("Login error:", error);
-            alert("Error while logging in. Please try again.");
+
         } finally {
             setLoading(false);
         }
     };
 
     return (
-        <div className="flex h-screen w-full  bg-gray-50 flex-col justify-center dark:bg-gray-950 items-center">
-            <div className="shadow-2xl border-zinc-950 shadow-blue-400 bg-gray-50 dark:bg-gray-900 rounded-2xl w-full md:w-1/3 p-6">
-                <h1 className="text-xl flex justify-center font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white mb-6">
+        <div className="flex h-screen w-full  bg-gray-50 flex-col justify-center dark:bg-gray-950 items-center p-2">
+            <div className="shadow-2xl border-zinc-950 shadow-blue-400 bg-gray-50 dark:bg-gray-900 rounded-2xl w-2/3 md:w-1/3 p-6">
+                <h1 className="text-2xl flex justify-center font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white mb-6">
                     Sign in to your account
                 </h1>
 
-                <div onSubmit={handleSubmit}>
+                <div onSubmit={handleSubmit} className="flex flex-col gap-2">
                     <div className="mb-4">
-                        <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                        <label htmlFor="email" className="block mb-2 text-sm font-bold font-[sans-serif] text-gray-900 dark:text-white">
                             Email
                         </label>
                         <div className="flex p-1 bg-gray-50 rounded-xl focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-blue-500 dark:bg-gray-700 dark:border-gray-600">
@@ -92,7 +100,7 @@ const Login = () => {
                     </div>
 
                     <div className="mb-4">
-                        <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                        <label htmlFor="password" className="block mb-2 font-bold text-sm font-[sans-serif] text-gray-900 dark:text-white">
                             Password
                         </label>
                         <div className="flex p-1 bg-gray-50 rounded-xl focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-blue-500 dark:bg-gray-700 dark:border-gray-600">
@@ -140,7 +148,7 @@ const Login = () => {
                         type="submit"
                         disabled={loading}
                         onClick={handleSubmit}
-                        className="w-full bg-slate-800   text-white hover:bg-slate-900 disabled:bg-slate-300 p-3 font-bold rounded-2xl mt-4 transition-colors"
+                        className="w-full bg-slate-800   text-white hover:bg-slate-900 disabled:bg-slate-300 p-3 font-bold rounded-2xl mt-4 dark:bg-blue-500 transition-colors"
                     >
                         {loading ? "Signing in..." : "Sign in"}
                     </button>
