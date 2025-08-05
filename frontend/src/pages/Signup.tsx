@@ -47,11 +47,11 @@ const Signup = () => {
         }
         try {
             setloading(true);
-          const response =  await axios.post(`${BACKEND_URL}/api/v1/user/signup`, formData)
-          const jwt = response.data.token;
-          localStorage.setItem("token",jwt);
-          navigate('/');
-          
+            const response = await axios.post(`${BACKEND_URL}/api/v1/user/signup`, formData)
+            const jwt = response.data.token;
+            localStorage.setItem("token", jwt);
+            navigate('/');
+
         } catch (error) {
             console.log(error);
             return;
