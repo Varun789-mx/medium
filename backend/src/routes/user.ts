@@ -1,5 +1,5 @@
 import { Hono } from 'hono'
-import { PrismaClient } from '../generated/prisma/edge'
+import { PrismaClient } from "../generated/prisma/edge";
 import { withAccelerate } from '@prisma/extension-accelerate'
 import { sign } from 'hono/jwt'
 import bcrypt from 'bcryptjs';

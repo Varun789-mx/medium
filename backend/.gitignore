@@ -188,3 +188,5 @@ worker-configuration.d.ts
 /src/generated/prisma
 
 /src/generated/prisma
+wrangler
+wrangler.jsonc
