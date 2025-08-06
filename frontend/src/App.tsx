@@ -5,6 +5,7 @@ import Login from './pages/Login';
 import LandingPage from './pages/Landing';
 import Addblog from './pages/Addblog';
 import BlogsPage from './pages/Blogs';
+import { ProtectedRoutes } from './components/ProctedRoutes';
 
 
 // Test prop with the new content
@@ -24,14 +25,18 @@ function App() {
   return (
     <>
       <BrowserRouter>
-      
-      <Routes>
-        <Route path='/signup' element={<Signup />} />
-        <Route path='/blog/:id' element={<BlogsPage/>}/>
-        <Route path='/login' element={<Login />} />
-        <Route path='/Addblog' element={<Addblog />} />
-        <Route path='/' element={<LandingPage />} />
-      </Routes>
+
+        <Routes>
+          <Route path='/signup' element={<Signup />} />
+          <Route path='/blog/:id' element={<ProtectedRoutes>
+            <BlogsPage />
+          </ProtectedRoutes>} />
+          <Route path='/login' element={<Login />} />
+          <Route path='/Addblog' element={<ProtectedRoutes>
+            <Addblog />
+          </ProtectedRoutes>} />
+          <Route path='/' element={<LandingPage />} />
+        </Routes>
       </BrowserRouter>
     </>
   )

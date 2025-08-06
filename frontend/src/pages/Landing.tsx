@@ -3,8 +3,11 @@ import carImage from "../assets/Car_image.png";
 import Allposts from "../components/Allposts";
 import { useNavigate } from "react-router-dom";
 
+
 const LandingPage = () => {
-const navigate = useNavigate();
+  const navigate = useNavigate();
+
+
   return (
     <div>
       <Navbarlogin />

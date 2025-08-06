@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Eye, EyeOff } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { BACKEND_URL } from "../config";
 import { useNavigate } from "react-router-dom";
 
@@ -12,15 +12,15 @@ const Login = () => {
         email: "",
         password: ""
     });
-    const [isDark, setIsDark] = useState(true);
+    // const [isDark, setIsDark] = useState(true);
 
-    useEffect(() => {
-        if (isDark) {
-            document.body.classList.add('dark');
-        } else {
-            document.body.classList.remove('dark');
-        }
-    }, [isDark]);
+    // useEffect(() => {
+    //     if (isDark) {
+    //         document.body.classList.add('dark');
+    //     } else {
+    //         document.body.classList.remove('dark');
+    //     }
+    // }, [isDark]);
     const [loading, setLoading] = useState(false);
 
     const handleFormData = (e: any) => {
@@ -60,7 +60,7 @@ const Login = () => {
                 localStorage.setItem("token", jwt);
                 navigate("/");
             }
-        
+
         } catch (error) {
             console.error("Login error:", error);
 

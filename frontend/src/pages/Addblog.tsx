@@ -1,12 +1,15 @@
 import { Bell, EllipsisVertical } from "lucide-react";
 import { useState } from "react";
 import { BACKEND_URL } from "../config";
+import Avatar from "../components/Avatar";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../Hooks/useAuth";
 
 
 const Addblog = () => {
     const navigate = useNavigate();
+    const { userdata } = useAuth();
     const [postdata, setpostdata] = useState({
         title: "",
         content: "",
@@ -14,13 +17,7 @@ const Addblog = () => {
         published: Boolean,
         authorid: ""
     })
-    function Avatar({ name, size = "small" }: { name: string, size?: "small" | "big" }) {
-        return <div className={`relative inline-flex items-center justify-center overflow-hidden bg-gray-600 rounded-full ${size === "small" ? "w-6 h-6" : "w-10 h-10"}`}>
-            <span className={`${size === "small" ? "text-xs" : "text-md"} font-extralight text-gray-600 dark:text-gray-300`}>
-                {name[0]}
-            </span>
-        </div>
-    }
+    
 
     const handlepostdata = (e: any) => {
         setpostdata({
@@ -68,7 +65,7 @@ const Addblog = () => {
                         <button className="bg-orange-500 rounded-2xl w-25 p-2 shadow-xl shadow-blue-200 font-bold text-white focus:bg-blue-600" onClick={Handlesubmit}>Publish</button>
                         <EllipsisVertical />
                         <Bell />
-                        <Avatar name="Jaun" size="small" />
+                        <Avatar name={userdata?.name || "Harsh"} size="small" />
                     </div>
                 </div>
             </nav>

@@ -23,10 +23,7 @@ const BlogsPage = () => {
                     }
                 });
                 setBlog(response.data.posts);
-
-                console.log(blog, "From blog")
             } catch (error) {
-                console.error(error);
                 setError("Failed to fetch blog");
             } finally {
                 setLoading(false);
