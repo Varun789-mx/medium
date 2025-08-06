@@ -2,7 +2,7 @@ import { Hono } from "hono";
 import { PrismaClient } from "../generated/prisma/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { verify } from "hono/jwt";
-import { z } from "zod";
+import { success, z } from "zod";
 
 const blogRouter = new Hono<{
     Bindings: {
@@ -48,6 +48,40 @@ blogRouter.use("*", async (c, next) => {
     } catch (error) {
         c.status(500);
         return c.json("Internal Error" + error);
+    }
+});
+
+blogRouter.get("/me", async (c) => {
+    const prisma = new PrismaClient({
+        datasourceUrl: c.env?.DATABASE_URL,
+    }).$extends(withAccelerate());
+    try {
+        const userid = c.get("userid");
+        
+        if (!userid) {
+            c.status(401);
+            return c.json({ error: "User ID not found" });
+        }
+        const user = await prisma.user.findUnique({
+            where:{
+                id:userid,
+            }
+        })
+        
+        if (!user) {
+            c.status(404);
+            return c.json({ error: "User not found" });
+        }
+
+        return c.json({
+            id: user.id,
+            email: user.email,
+            name: user.name,
+        });
+        
+    } catch (error) {
+        c.status(500);
+        return c.json({ error: "Internal server error: " + error });
     }
 });
 
