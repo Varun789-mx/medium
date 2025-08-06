@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { BACKEND_URL } from "../config";
-import { Commet } from "react-loading-indicators";
+import { OrbitProgress } from "react-loading-indicators";
 import { useNavigate } from "react-router-dom";
 
 interface posts {
@@ -38,8 +38,8 @@ const Allposts = () => {
         >
           <div className="md:flex justify-evenly w-full">
             <div className="md:shrink-0 pl-4 flex-shrink-0">
-              {loading ? (
-                <Commet color="#0000FF" size="medium" text="" textColor="" />
+              {!post.picture ? (
+               <OrbitProgress color="#0000FF" size="medium" text="" textColor="" />
               ) : (
                 <img
                   src={post.picture}

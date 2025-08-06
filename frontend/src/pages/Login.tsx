@@ -60,11 +60,7 @@ const Login = () => {
                 localStorage.setItem("token", jwt);
                 navigate("/");
             }
-            if (response.data.status === 401) {
-                alert("Incorrect Email or Password")
-                return;
-            }
-
+        
         } catch (error) {
             console.error("Login error:", error);
 
