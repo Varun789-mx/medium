@@ -13,7 +13,7 @@ const User_schema = z.object({
   email: z.email(),
   password: z
     .string()
-    .min(8, { error: "Password should be atleast 8 characters long" }),
+    .min(5, { error: "Password should be atleast 8 characters long" }),
 });
 
 export const userRouter = new Hono<{

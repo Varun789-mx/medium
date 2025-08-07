@@ -19,27 +19,30 @@ const Allposts = () => {
   const [loading, setloading] = useState(true);
 
   useEffect(() => {
+    setloading(true);
     axios
       .get(`${BACKEND_URL}/Allblogs`)
       .then(res => setposts(res.data.data))
-      .then(() => !posts ? setloading(true) : setloading(false))
+      .then(() => setloading(false))
       .catch(e => console.log(e));
   }, []);
 
   return (
     <>
+      console.log(loading);
       <div className="font-semibold p-2 pl-5 text-2xl">
         All posts
       </div>
       {posts.map((post) => (
-        <div 
-          key={post.id} 
+        <div
+          key={post.id}
           className="mx-auto max-w-full overflow-hidden rounded-xl flex justify-center bg-white shadow-md md:max-w-full p-5 m-4 gap-4 min-h-[300px]" // Added min-h-[300px]
         >
           <div className="md:flex justify-evenly w-full">
             <div className="md:shrink-0 pl-4 flex-shrink-0">
-              {!post.picture ? (
-               <OrbitProgress color="#0000FF" size="medium" text="" textColor="" />
+
+              {loading ? (
+                <OrbitProgress color="#0000FF" size="medium" text="" textColor="" />
               ) : (
                 <img
                   src={post.picture}
@@ -62,7 +65,7 @@ const Allposts = () => {
                   </p>
                 </div>
               </div>
-              <button 
+              <button
                 className="mt-8 p-4 flex items-center gap-2 bg-red-500 text-sm hover:bg-red-600 text-white px-8 py-3 rounded-lg font-semibold self-start" // Added self-start
                 onClick={() => {
                   navigate(`/blog/${post.id}`)

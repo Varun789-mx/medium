@@ -110,6 +110,7 @@ blogRouter.post("/add", async (c) => {
             data: {
                 title: SafeData.data.title,
                 content: SafeData.data.content,
+                published:true,
                 author: {
                     connect: { id: userid }
                 }

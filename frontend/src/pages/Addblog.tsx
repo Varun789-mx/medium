@@ -27,10 +27,11 @@ const Addblog = () => {
 
     }
     const Handlesubmit = async () => {
-        console.log(postdata);
+    
         const response = await axios.post(`${BACKEND_URL}/api/v1/blog/add`, {
             title: postdata.title,
-            content: postdata.content
+            content: postdata.content,
+            published:true,
         }, {
             headers: {
                 Authorization: localStorage.getItem('token')
@@ -65,7 +66,9 @@ const Addblog = () => {
                         <button className="bg-orange-500 rounded-2xl w-25 p-2 shadow-xl shadow-blue-200 font-bold text-white focus:bg-blue-600" onClick={Handlesubmit}>Publish</button>
                         <EllipsisVertical />
                         <Bell />
+                        <div onClick={()=>navigate('/')} className="cursor-pointer">
                         <Avatar name={userdata?.name || "Harsh"} size="small" />
+                        </div>
                     </div>
                 </div>
             </nav>

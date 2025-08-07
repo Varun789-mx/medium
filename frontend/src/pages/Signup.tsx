@@ -65,7 +65,7 @@ const Signup = () => {
 
         <div className="flex h-screen w-full bg-gray-50 flex-col justify-center dark:bg-gray-800 align-center items-center">
            
-            <div className=" shadow-2xl shadow-slate-800 bg-slate-100 dark:bg-gray-900 rounded-2xl w-full md:w-1/4 p-4">
+            <div className=" shadow-2xl border-zinc-950 shadow-blue-400 bg-slate-100 dark:bg-gray-900 rounded-2xl w-full md:w-1/3 p-4">
 
                 <h1 className="text-xl flex justify-center font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                     Create an account

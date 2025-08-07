@@ -60,9 +60,14 @@ const Login = () => {
                 localStorage.setItem("token", jwt);
                 navigate("/");
             }
+            if(response.data.start === 401) {
+                alert("Invalid credentials")
+                return;
+            }
 
         } catch (error) {
-            console.error("Login error:", error);
+            alert("Error invalid credentials")
+            console.log(error);
 
         } finally {
             setLoading(false);
@@ -71,7 +76,7 @@ const Login = () => {
 
     return (
         <div className="flex h-screen w-full  bg-gray-50 flex-col justify-center dark:bg-gray-950 items-center p-2">
-            <div className="shadow-2xl border-zinc-950 shadow-blue-400 bg-slate-100 dark:bg-gray-900 rounded-2xl w-full md:w-1/4 p-6">
+            <div className="shadow-2xl border-zinc-950 shadow-blue-400 bg-slate-100 dark:bg-gray-900 rounded-2xl w-full  md:w-1/3 p-6">
                 <h1 className="text-2xl flex justify-center font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white mb-6">
                     Sign in to your account
                 </h1>

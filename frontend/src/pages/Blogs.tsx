@@ -1,16 +1,19 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { BACKEND_URL } from "../config";
 import type { Blogprop } from "../types";
 import axios from "axios";
 import Avatar from "../components/Avatar";
 import { Bell, EllipsisVertical } from "lucide-react";
 import { useState, useEffect } from "react";
+import { useAuth } from "../Hooks/useAuth";
 
 const BlogsPage = () => {
     const { id } = useParams();
     const [blog, setBlog] = useState<Blogprop | null>(null);
     const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
     const [error, setError] = useState<string | null>(null);
+    const { userdata } = useAuth();
 
 
     useEffect(() => {
@@ -65,7 +68,15 @@ const BlogsPage = () => {
 
                         <EllipsisVertical />
                         <Bell />
-                        <Avatar name={blog.author.name} size="small" />
+                        <div onClick={()=>navigate('/')} className="cursor-pointer">
+                            {userdata ?
+                            
+                                <Avatar name={userdata?.name} size="small"  />
+                           
+                                : 
+                                <button  className="bg-white p-2 text-sm text-black font-bold rounded-2xl focus:bg-slate-300 transition-colors duration-300">Subscribe</button> 
+                            }
+                        </div>
                     </div>
                 </div>
             </nav>
