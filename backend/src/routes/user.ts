@@ -1,71 +1,80 @@
-import { Hono } from 'hono'
+import { Hono } from "hono";
 import { PrismaClient } from "../generated/prisma/edge";
-import { withAccelerate } from '@prisma/extension-accelerate'
-import { sign } from 'hono/jwt'
-import bcrypt from 'bcryptjs';
+import { withAccelerate } from "@prisma/extension-accelerate";
+import { sign } from "hono/jwt";
+import bcrypt from "bcryptjs";
 import { z } from "zod";
-import { startTime } from 'hono/timing';
+import { startTime } from "hono/timing";
 
 const User_schema = z.object({
-  name: z.string({ error: "Name should be a string" }).min(3, { error: "Name should be atleast 3 characters long" }),
+  name: z
+    .string({ error: "Name should be a string" })
+    .min(3, { error: "Name should be atleast 3 characters long" }),
   email: z.email(),
-  password: z.string().min(8, { error: "Password should be atleast 8 characters long" })
-})
-
+  password: z
+    .string()
+    .min(8, { error: "Password should be atleast 8 characters long" }),
+});
 
 export const userRouter = new Hono<{
   Bindings: {
-    DATABASE_URL: string
-    JWT_SECRET: string
-  },
+    DATABASE_URL: string;
+    JWT_SECRET: string;
+  };
   Variables: {
-    userid: string,
-  }
+    userid: string;
+  };
 }>();
 
-userRouter.post('/signin', async (c) => {
+userRouter.post("/signin", async (c) => {
   const prisma = new PrismaClient({
     datasourceUrl: c.env?.DATABASE_URL,
-  }).$extends(withAccelerate())
+  }).$extends(withAccelerate());
   const body = await c.req.json();
   const signin_schema = User_schema.pick({ email: true, password: true });
   const parseduser = signin_schema.safeParse(body);
   if (!parseduser.success) {
     c.status(400);
-    return c.json({ Error: "Error in input " })
+    return c.json({ Error: "Error in input " });
   }
   try {
     const GetUser = await prisma.user.findUnique({
-      where: { email: parseduser.data.email }
+      where: { email: parseduser.data.email },
     });
 
     if (!GetUser) {
-      c.status(401)
+      c.status(401);
       return c.json({
         Error: "Incorrect password or email" + parseduser.error,
-        status:401
+        status: 401,
       });
     }
-    const isValidpassword = await bcrypt.compare(parseduser.data.password, GetUser.password);
-    if (isValidpassword) {
-      const jwt = await sign({ id: GetUser.id, email: GetUser.email }, c.env.JWT_SECRET);
-      return c.json({
-        token: "Bearer " + jwt,
-        status: 200
-      });
-    }
-    else {
+    const isValidpassword = await bcrypt.compare(
+      parseduser.data.password,
+      GetUser.password
+    );
+    if (!isValidpassword || !GetUser) {
       c.status(401);
-      return c.json({ Error: "Incorrect password" });
+      return c.json({
+        error: "Incorrect password",
+      });
     }
-  }
-  catch (error) {
+
+    const jwt = await sign(
+      { id: GetUser.id, email: GetUser.email },
+      c.env.JWT_SECRET
+    );
+    return c.json({
+      token: "Bearer " + jwt,
+      status: 200,
+    });
+  } catch (error) {
     c.status(500);
     return c.json({ Error: "Internal server error" + error });
   }
 });
 
-userRouter.post('/signup', async (c) => {
+userRouter.post("/signup", async (c) => {
   const prisma = new PrismaClient({
     datasourceUrl: c.env?.DATABASE_URL,
   }).$extends(withAccelerate());
@@ -74,40 +83,39 @@ userRouter.post('/signup', async (c) => {
     const parseduser = User_schema.safeParse(body);
     if (!parseduser.success) {
       c.status(400);
-      return c.json({ Error: "Error in input "+ parseduser.error })
-
+      return c.json({ Error: "Error in input " + parseduser.error });
     }
     const hashedpassword = await bcrypt.hash(parseduser.data.password, 12);
     const finduser = await prisma.user.findUnique({
-      where: { email: parseduser.data.email }
-    })
+      where: { email: parseduser.data.email },
+    });
     if (!finduser) {
       const user = await prisma.user.create({
-       data : {
+        data: {
           email: parseduser.data.email,
           name: parseduser.data.name,
-          password: hashedpassword
-        }
-      })
-      const jwt = await sign({ id: user.id, email: user.email }, c.env.JWT_SECRET);
+          password: hashedpassword,
+        },
+      });
+      const jwt = await sign(
+        { id: user.id, email: user.email },
+        c.env.JWT_SECRET
+      );
       return c.json({
         token: "Bearer " + jwt,
-        status:200
+        status: 200,
       });
-    }
-    else {
+    } else {
       c.status(404);
       return c.json({ Error: "User already exists" });
     }
-  }
-  catch (error) {
+  } catch (error) {
     c.status(408);
     return c.json({
-      Error: "Error in creating the user" + error
+      Error: "Error in creating the user" + error,
     });
   }
-
-})
+});
 userRouter.get("/Allblogs", async (c) => {
   const prisma = new PrismaClient({
     datasourceUrl: c.env?.DATABASE_URL,
@@ -115,26 +123,24 @@ userRouter.get("/Allblogs", async (c) => {
   try {
     const posts = await prisma.post.findMany({
       where: {
-        published: true
-      }
-    })
+        published: true,
+      },
+    });
     if (!posts) {
       c.status(404);
       return c.json({
         Error: "Server issue",
-      })
-    }
-    else {
+      });
+    } else {
       c.status(200);
       return c.json({
         data: posts,
-      })
+      });
     }
   } catch (error) {
     c.status(404);
-    return c.json({ Error: "Error in getting posts " + error })
+    return c.json({ Error: "Error in getting posts " + error });
   }
 });
 
-
-export default userRouter
+export default userRouter;

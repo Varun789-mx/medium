@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Hamburger from "hamburger-react";
 import { useNavigate } from "react-router-dom";
-import logo from '../assets/logo.png';
+import logo from "../assets/logo.png";
 import Avatar from "./Avatar";
 import { useAuth } from "../Hooks/useAuth";
 
@@ -12,9 +12,8 @@ const Navbarlogin = () => {
   const { loggedin, logout, userdata } = useAuth();
   console.log(loggedin, "Logged in");
 
-
   return (
-    <header className="">
+    <header className="relative">
       <div className="  bg-slate-800  md:flex justify-between p-4 items-center w-full ">
         <div className="md:flex md:justify-center">
           <div className="flex gap-2 ">
@@ -32,7 +31,10 @@ const Navbarlogin = () => {
           </div>
           <div>
             <span>
-              <a href="/addblog" className="focus:font-bold focus:animate-pulse ">
+              <a
+                href="/addblog"
+                className="focus:font-bold focus:animate-pulse "
+              >
                 <p>Blog</p>
               </a>
             </span>
@@ -44,7 +46,6 @@ const Navbarlogin = () => {
               </a>
             </span>
           </div>{" "}
-         
           <div>
             <span>
               <a href="#" className="focus:font-bold focus:animate-pulse ">
@@ -53,17 +54,28 @@ const Navbarlogin = () => {
             </span>
           </div>
           <div>
-            {loggedin ? <div onClick={() => setshow(!show)} className="cursor-pointer">
-              <Avatar size="small" name={userdata?.name || "Harsh"} />
-              {show && (
-              <div  className="relative inline-block" >
-                <div  className="flex items-center space-x-2 cursor-pointer hover:opacity-80 transition-opacity">Log Out</div>
-              </div>)}
-            </div>
-              : <button onClick={() => navigate('/login')} className="bg-white p-2 text-sm text-black font-bold rounded-2xl focus:bg-slate-300 transition-colors duration-300">
+            {loggedin ? (
+              <div onClick={() => setshow(!show)} className="cursor-pointer">
+                <Avatar size="small" name={userdata?.name || "Harsh"} />
+                {show && (
+                  <div className="relative inline-block">
+                    <div
+                      onClick={logout}
+                      className="flex items-center space-x-2 cursor-pointer hover:opacity-80 transition-opacity"
+                    >
+                      Log Out
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <button
+                onClick={() => navigate("/login")}
+                className="bg-white p-2 text-sm text-black font-bold rounded-2xl focus:bg-slate-300 transition-colors duration-300"
+              >
                 Subscribe
               </button>
-            }
+            )}
           </div>
         </div>
         <button
@@ -73,35 +85,46 @@ const Navbarlogin = () => {
           <Hamburger toggled={isopen} size={24} />
         </button>
         {isopen && (
-          <div className="absolute top-16 left-0  w-full right-0 bg-slate-900 bg-background/80 border-b ">
+          <div className="absolute top-full left-0  w-full right-0 bg-slate-800 z-50  border-b ">
             <div className="flex flex-col gap-4 py-4 px-6 text-white">
               <a
                 href="#Feature"
                 className="p-4 hover:text-blue-500 "
                 onClick={() => setisopen(false)}
               >
-                Features
+                Home
               </a>
               <a
                 href="#howitworks"
                 className="p-4 hover:text-blue-500 "
                 onClick={() => setisopen(false)}
               >
-                How it works
+                Blog
               </a>
               <a
                 href="#"
                 className="p-4 hover:text-blue-500 "
                 onClick={() => setisopen(false)}
               >
-                Testimonials
+                Contact
               </a>
               <a
                 href="#"
                 className="p-4 hover:text-blue-500 "
                 onClick={() => setisopen(false)}
               >
-                Pricing
+                About
+              </a>
+              <a
+                href="#"
+                className="p-4 hover:text-blue-500"
+                onClick={() => {
+                  {loggedin?logout():navigate('/login');}
+                  setisopen(false);
+
+                }}
+              >
+                {loggedin?"Log out":"Log in"}
               </a>
             </div>
           </div>
