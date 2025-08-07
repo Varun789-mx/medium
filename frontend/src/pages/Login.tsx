@@ -61,7 +61,7 @@ const Login = () => {
                 navigate("/");
             }
             if(response.data.start === 401) {
-                alert("Invalid credentials")
+                alert("Invalid Sdentials")
                 return;
             }
 
@@ -155,8 +155,8 @@ const Login = () => {
                     </button>
                 </div>
 
-                <p className="text-sm font-semibold text-gray-700 m-4 text-center dark:text-white">
-                    Don't have an account? <a href="signup" className="font-medium text-blue-600 hover:underline dark:text-blue-500">Sign up here</a>
+                <p onClick={()=>navigate('/signup')} className="text-sm font-semibold text-gray-700 m-4 text-center dark:text-white">
+                    Don't have an account? <a href="" className="font-medium text-blue-600 hover:underline dark:text-blue-500">Sign up here</a>
                 </p>
             </div>
         </div>
