@@ -13,7 +13,7 @@ const User_schema = z.object({
   email: z.email(),
   password: z
     .string()
-    .min(5, { error: "Password should be atleast 8 characters long" }),
+    .min(5, { error: "Password should be atleast 5 characters long" }),
 });
 
 export const userRouter = new Hono<{
@@ -71,6 +71,8 @@ userRouter.post("/signin", async (c) => {
   } catch (error) {
     c.status(500);
     return c.json({ Error: "Internal server error" + error });
+  } finally {
+    await prisma.$disconnect();
   }
 });
 
@@ -106,7 +108,7 @@ userRouter.post("/signup", async (c) => {
         status: 200,
       });
     } else {
-      c.status(404);
+      c.status(409);
       return c.json({ Error: "User already exists" });
     }
   } catch (error) {
@@ -114,6 +116,9 @@ userRouter.post("/signup", async (c) => {
     return c.json({
       Error: "Error in creating the user" + error,
     });
+  }
+  finally {
+    await prisma.$disconnect();
   }
 });
 userRouter.get("/Allblogs", async (c) => {
@@ -140,6 +145,9 @@ userRouter.get("/Allblogs", async (c) => {
   } catch (error) {
     c.status(404);
     return c.json({ Error: "Error in getting posts " + error });
+  }
+  finally {
+    await prisma.$disconnect();
   }
 });
 
