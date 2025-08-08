@@ -37,7 +37,14 @@ app.get("/Allblogs", async (c) => {
   const prisma = new PrismaClient({
     datasourceUrl: c.env?.DATABASE_URL,
   }).$extends(withAccelerate());
+  
   try {
+    if(!prisma) { 
+      c.status(405)
+      return c.json({
+        Error:c.env?.DATABASE_URL
+      })
+    }
     const posts = await prisma.post.findMany({
       where: {
         published: true

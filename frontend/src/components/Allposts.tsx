@@ -29,7 +29,7 @@ const Allposts = () => {
 
   return (
     <>
-      console.log(loading);
+    
       <div className="font-semibold p-2 pl-5 text-2xl">
         All posts
       </div>
