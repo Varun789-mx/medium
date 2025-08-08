@@ -57,17 +57,17 @@ blogRouter.get("/me", async (c) => {
     }).$extends(withAccelerate());
     try {
         const userid = c.get("userid");
-        
+
         if (!userid) {
             c.status(401);
             return c.json({ error: "User ID not found" });
         }
         const user = await prisma.user.findUnique({
-            where:{
-                id:userid,
+            where: {
+                id: userid,
             }
         })
-        
+
         if (!user) {
             c.status(404);
             return c.json({ error: "User not found" });
@@ -78,7 +78,7 @@ blogRouter.get("/me", async (c) => {
             email: user.email,
             name: user.name,
         });
-        
+
     } catch (error) {
         c.status(500);
         return c.json({ error: "Internal server error: " + error });
@@ -110,7 +110,7 @@ blogRouter.post("/add", async (c) => {
             data: {
                 title: SafeData.data.title,
                 content: SafeData.data.content,
-                published:true,
+                published: true,
                 author: {
                     connect: { id: userid }
                 }
@@ -170,16 +170,16 @@ blogRouter.get("/:id", async (c) => {
             where: {
                 id: id
             },
-           include: {
-        author: {
-          select: {
-            name: true,
-            bio: true,
-            profilepic: true
-          }
-        }
-      }
-    })
+            include: {
+                author: {
+                    select: {
+                        name: true,
+                        bio: true,
+                        profilepic: true
+                    }
+                }
+            }
+        })
         if (!posts) {
             c.status(404);
             return c.json({

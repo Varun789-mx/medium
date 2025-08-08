@@ -27,10 +27,11 @@ const LandingPage = () => {
             <br />
             <span className="text-white">Your Journey</span>
 
-            <p className="font-sans text-white text-sm p-5  w-full md:w-2/3 font-semibold">
+            <p className="font-[sans-serif] text-white text-sm p-5 font-thin w-full md:w-1/3 ">
               At that moment, she realized that she had created her current life. It wasn't the life she wanted, but she took responsibility for how it currently stood. Something clicked and she saw that every choice she made to this point in her life had led to where her life stood at this very moment
             </p>
-            <button className="mt-8 flex items-center gap-2 bg-red-500 text-sm hover:bg-red-600 text-white px-8 py-3 rounded-lg font-semibold " onClick={() => navigate('/login')}>
+            <button className="mt-8 flex items-center gap-2 bg-red-500 text-sm hover:bg-red-600 text-white px-8 py-3 rounded-lg font-semibold " 
+            onClick={() => {!loggedin? (navigate('/')):(navigate('/login'))} }>
               {loggedin ? "Subscribed" : "Subscribe"}<svg
                 className="w-4 h-4 rotate-45"
                 fill="none"

@@ -39,7 +39,7 @@ userRouter.post("/signin", async (c) => {
   }
   try {
     const GetUser = await prisma.user.findUnique({
-      where: { email: parseduser.data.email },
+      where: { email: parseduser.data.email.toLowerCase() },
     });
 
     if (!GetUser) {
@@ -61,7 +61,7 @@ userRouter.post("/signin", async (c) => {
     }
 
     const jwt = await sign(
-      { id: GetUser.id, email: GetUser.email },
+      { id: GetUser.id, email: GetUser.email.toLowerCase() },
       c.env.JWT_SECRET
     );
     return c.json({
@@ -87,18 +87,18 @@ userRouter.post("/signup", async (c) => {
     }
     const hashedpassword = await bcrypt.hash(parseduser.data.password, 12);
     const finduser = await prisma.user.findUnique({
-      where: { email: parseduser.data.email },
+      where: { email: parseduser.data.email.toLowerCase() },
     });
     if (!finduser) {
       const user = await prisma.user.create({
         data: {
-          email: parseduser.data.email,
-          name: parseduser.data.name,
+          email: parseduser.data.email.toLowerCase(),
+          name: parseduser.data.name.toLowerCase(),
           password: hashedpassword,
         },
       });
       const jwt = await sign(
-        { id: user.id, email: user.email },
+        { id: user.id, email: user.email.toLowerCase() },
         c.env.JWT_SECRET
       );
       return c.json({

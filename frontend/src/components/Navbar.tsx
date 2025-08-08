@@ -41,14 +41,14 @@ const Navbarlogin = () => {
           </div>{" "}
           <div>
             <span>
-              <a href="#" className="focus:font-bold focus:animate-pulse ">
+              <a href="https://x.com/Hash_module" className="focus:font-bold focus:animate-pulse ">
                 <p>About</p>
               </a>
             </span>
           </div>{" "}
           <div>
             <span>
-              <a href="#" className="focus:font-bold focus:animate-pulse ">
+              <a href="https://github.com/Varun789-mx" className="focus:font-bold focus:animate-pulse ">
                 <p>Contact us</p>
               </a>
             </span>
@@ -102,14 +102,14 @@ const Navbarlogin = () => {
                 Blog
               </a>
               <a
-                href="#"
+                href="https://github.com/Varun789-mx"
                 className="p-4 hover:text-blue-500 "
                 onClick={() => setisopen(false)}
               >
                 Contact
               </a>
               <a
-                href="#"
+                href="https://x.com/Hash_module"
                 className="p-4 hover:text-blue-500 "
                 onClick={() => setisopen(false)}
               >
