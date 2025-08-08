@@ -63,4 +63,34 @@ app.get("/Allblogs", async (c) => {
   }
 });
 
+app.get("/Alluser", async (c) => {
+  const prisma = new PrismaClient({
+    datasourceUrl: c.env?.DATABASE_URL,
+  }).$extends(withAccelerate());
+
+  try {
+    if (!prisma) {
+      c.status(405);
+      return c.json({
+        Error: c.env?.DATABASE_URL,
+      });
+    }
+    const posts = await prisma.user.findMany();
+    if (!posts) {
+      c.status(404);
+      return c.json({
+        Error: "Server issue",
+      });
+    } else {
+      c.status(200);
+      return c.json({
+        data: posts,
+      });
+    }
+  } catch (error) {
+    c.status(404);
+    return c.json({ Error: "Error in getting posts " + error });
+  }
+});
+
 export default app;
