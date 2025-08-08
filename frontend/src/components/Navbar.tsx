@@ -119,12 +119,13 @@ const Navbarlogin = () => {
                 href="#"
                 className="p-4 hover:text-blue-500"
                 onClick={() => {
-                  {loggedin?logout():navigate('/login');}
+                  {
+                    loggedin ? logout() : navigate("/login");
+                  }
                   setisopen(false);
-
                 }}
               >
-                {loggedin?"Log out":"Log in"}
+                {loggedin ? "Log out" : "Log in"}
               </a>
             </div>
           </div>

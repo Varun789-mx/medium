@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import { PrismaClient } from "../generated/prisma/edge";
+import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { verify } from "hono/jwt";
 import { success, z } from "zod";

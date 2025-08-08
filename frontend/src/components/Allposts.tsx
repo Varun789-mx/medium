@@ -22,17 +22,14 @@ const Allposts = () => {
     setloading(true);
     axios
       .get(`${BACKEND_URL}/Allblogs`)
-      .then(res => setposts(res.data.data))
+      .then((res) => setposts(res.data.data))
       .then(() => setloading(false))
-      .catch(e => console.log(e));
+      .catch((e) => console.log(e));
   }, []);
 
   return (
     <>
-    
-      <div className="font-semibold p-2 pl-5 text-2xl">
-        All posts
-      </div>
+      <div className="font-semibold p-2 pl-5 text-2xl">All posts</div>
       {posts.map((post) => (
         <div
           key={post.id}
@@ -40,9 +37,13 @@ const Allposts = () => {
         >
           <div className="md:flex justify-evenly w-full">
             <div className="md:shrink-0 pl-4 flex-shrink-0">
-
               {loading ? (
-                <OrbitProgress color="#0000FF" size="medium" text="" textColor="" />
+                <OrbitProgress
+                  color="#0000FF"
+                  size="medium"
+                  text=""
+                  textColor=""
+                />
               ) : (
                 <img
                   src={post.picture}
@@ -51,7 +52,9 @@ const Allposts = () => {
                 />
               )}
             </div>
-            <div className="p-8 flex-1 flex flex-col justify-between"> {/* Added flex-1 and flex flex-col justify-between */}
+            <div className="p-8 flex-1 flex flex-col justify-between">
+              {" "}
+              {/* Added flex-1 and flex flex-col justify-between */}
               <div>
                 <div className="uppercase tracking-wide text-sm text-indigo-500 font-semibold mb-2">
                   Article
@@ -59,7 +62,9 @@ const Allposts = () => {
                 <h2 className="text-2xl font-bold text-gray-900 mb-4 hover:text-indigo-600 transition-colors duration-200">
                   {post.title}
                 </h2>
-                <div className="flex-1"> {/* This will take up available space */}
+                <div className="flex-1">
+                  {" "}
+                  {/* This will take up available space */}
                   <p className="text-gray-600 leading-relaxed mb-6 line-clamp-3">
                     {post.content}
                   </p>
@@ -68,7 +73,7 @@ const Allposts = () => {
               <button
                 className="mt-8 p-4 flex items-center gap-2 bg-red-500 text-sm hover:bg-red-600 text-white px-8 py-3 rounded-lg font-semibold self-start" // Added self-start
                 onClick={() => {
-                  navigate(`/blog/${post.id}`)
+                  navigate(`/blog/${post.id}`);
                 }}
               >
                 Read full article
