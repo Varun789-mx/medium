@@ -7,7 +7,7 @@ import { useAuth } from "../Hooks/useAuth";
 
 const LandingPage = () => {
   const navigate = useNavigate();
-  const {loggedin} = useAuth();
+  const { loggedin } = useAuth();
 
 
   return (
@@ -28,14 +28,10 @@ const LandingPage = () => {
             <span className="text-white">Your Journey</span>
 
             <p className="font-sans text-white text-sm p-5  w-full md:w-2/3 font-semibold">
-              Lorem, ipsum dolor sit amet consectetur adipisicing elit. Est
-              explicabo deleniti excepturi quam dolore, dicta perspiciatis
-              dolore. Exercitationem, quaerat laboriosam amet ducimus illum
-              doloremque voluptas quia dolore pariatur? Vitae delectus pariatur
-              consectetur rem!
+              At that moment, she realized that she had created her current life. It wasn't the life she wanted, but she took responsibility for how it currently stood. Something clicked and she saw that every choice she made to this point in her life had led to where her life stood at this very moment
             </p>
             <button className="mt-8 flex items-center gap-2 bg-red-500 text-sm hover:bg-red-600 text-white px-8 py-3 rounded-lg font-semibold " onClick={() => navigate('/login')}>
-             {loggedin?"Subscribed":"Subscribe"}<svg
+              {loggedin ? "Subscribed" : "Subscribe"}<svg
                 className="w-4 h-4 rotate-45"
                 fill="none"
                 stroke="currentColor"
