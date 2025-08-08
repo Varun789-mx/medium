@@ -12,15 +12,8 @@ const Login = () => {
         email: "",
         password: ""
     });
-    // const [isDark, setIsDark] = useState(true);
 
-    // useEffect(() => {
-    //     if (isDark) {
-    //         document.body.classList.add('dark');
-    //     } else {
-    //         document.body.classList.remove('dark');
-    //     }
-    // }, [isDark]);
+   
     const [loading, setLoading] = useState(false);
 
     const handleFormData = (e: any) => {
