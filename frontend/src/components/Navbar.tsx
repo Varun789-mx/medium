@@ -10,7 +10,6 @@ const Navbarlogin = () => {
   const navigate = useNavigate();
   const [show, setshow] = useState(false);
   const { loggedin, logout, userdata } = useAuth();
-  console.log(loggedin, "Logged in");
 
   return (
     <header className="relative">
